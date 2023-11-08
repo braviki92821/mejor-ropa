@@ -1,0 +1,12 @@
+.header {
+    background-color: rgba(214, 175, 97, 0.801);
+    padding: 1rem 0 2rem 0;
+
+
+        .contenido-header {
+            @include tablet {
+                min-height: 50rem;
+            }
+
+    }
+}
