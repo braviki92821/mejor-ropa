@@ -1,5 +1,4 @@
 <?php
-require '../../includes/app.php';
 
 use App\Ropa;
 use App\Color;
@@ -8,17 +7,20 @@ use App\Talla;
 use App\Tienda;
 use Intervention\Image\ImageManagerStatic as Image;
 
+require '../../includes/app.php';
+
 $ropa = new Ropa;
 $talla = new Talla;
 $marca = new Marca;
 
 $colores = Color::all();
 $tiendas = Tienda::all();
+$errores = Ropa::getErrores();
 
 $nuevo = $_GET['nuevo'] ?? 'camisa';
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-     if ($_GET['nuevo'] == null) {
+
+    if ($_GET['nuevo'] == null) {
          header('Location: /comparador-ropa/admin/ropa/añadir.php?nuevo=camisa');
     }
 
@@ -33,9 +35,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $marcas = $marca->tipo('calzado');    
     }
     
- }
 
-incluirTemplate('header');
+    if($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    $ropa = new Ropa($_POST['ropa']);
+
+    // Crear carpeta
+    
+    // Generar un nombre único
+    $nombreImagen = md5( uniqid( rand(), true ) ) . ".jpg";
+
+    if($_FILES['ropa']['tmp_name']['imagen']){
+        $image = Image::make($_FILES['ropa']['tmp_name']['imagen'])->fit(800,600);  
+        $ropa->setImagen($nombreImagen);
+    }
+
+    $errores = $ropa->validar();
+
+    if(empty($errores)) {
+
+        /** SUBIDA DE ARCHIVOS */
+
+        if(!is_dir(CARPETA_IMAGENES)) {
+            mkdir(CARPETA_IMAGENES);
+        }
+
+        // Subir la imagen
+
+        $image->save(CARPETA_IMAGENES . $nombreImagen);
+
+        $resultado = $ropa->guardar();
+    }
+    }
+
+ incluirTemplate('header');
 ?>
 
 <main class="contenedor seccion">
@@ -49,7 +82,7 @@ incluirTemplate('header');
         </div>
         <?php endforeach; ?>
 
-        <form class="formulario" method="POST" action="/comparador-ropa/admin/ropa/añadir.php" enctype="multipart/form-data">
+        <form class="formulario" method="POST" action="/comparador-ropa/admin/ropa/añadir.php?nuevo=<?php echo $nuevo; ?>" enctype="multipart/form-data">
             <?php include '../../includes/templates/formulario_ropa.php' ?>
             <input type="submit" value="Añadir Ropa" class="boton boton-verde">
         </form> 

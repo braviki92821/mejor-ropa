@@ -7,10 +7,9 @@ $ropa = new Ropa;
 
 $query = $_GET['query'] ?? 'todo';
 
-if($_SERVER['REQUEST_METHOD'] === 'GET'){
-  
-    if( $_GET['query'] == null )
+    if( $_GET['query'] == null ):
         header('Location: /comparador-ropa/admin/?query=todo');
+    endif;
 
     if($query == 'todo'){
         $ropas = Ropa::all();
@@ -22,7 +21,19 @@ if($_SERVER['REQUEST_METHOD'] === 'GET'){
         $ropas = $ropa->tipo('calzado');
     }
 
-}
+    if($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $id = $_POST['id'];
+        $id = filter_var($id, FILTER_VALIDATE_INT);
+
+        if($id) {
+
+        $ropa = Ropa::find($id);
+
+        $ropa->eliminar();
+   
+        }
+        
+    }
 
 incluirTemplate('header');
 ?>

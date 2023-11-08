@@ -19,11 +19,10 @@
                 <td>
                     <form method="POST" class="w-100">
                         <input type="hidden" name="id" value="<?php echo $ropa->id; ?>">
-                        <input type="hidden" name="tipo" value="propiedad">
                         <input type="submit" class="boton-rojo-block" value="Eliminar">
                     </form>
 
-                    <a href="/comparador-ropa/admin/ropa/actualizar.php?id=<?php echo $ropa->id; ?>" class="boton-amarillo-block">Actualizar</a>
+                    <a href="/comparador-ropa/admin/ropa/actualizar.php?id=<?php echo $ropa->id; ?>&nuevo=<?php echo $ropa->tipo; ?>" class="boton-amarillo-block">Actualizar</a>
                 </td>
             </tr>
         <?php endforeach; ?>

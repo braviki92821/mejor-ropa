@@ -7,8 +7,8 @@
     <label for="genero">Ropa de:</label>
     <select name="ropa[genero]">
         <option value="">-- Seleccione --</option>
-        <option value="H">Hombre</option>
-        <option value="M">Mujer</option>
+        <option <?php echo $ropa->genero === "H" ? 'selected' : ''; ?> value="H">Hombre</option>
+        <option <?php echo $ropa->genero === "M" ? 'selected' : ''; ?> value="M">Mujer</option>
     </select>
 
     <input type="hidden" name="ropa[tipo]" value="<?php echo $nuevo ?>">
@@ -32,31 +32,31 @@
     <select name="ropa[tallaId]">
         <option value="">-- Seleccione --</option>
         <?php foreach($tallas as $talla) : ?>
-            <option <?php echo $ropa->tallaId === $talla->id ? 'selected' : ''; ?> value="<?php echo s($talla->id); ?>"> <?php echo $talla->nombre?> </option>
+            <option <?php echo $ropa->tallaId === $talla->id ? 'selected' : ''; ?> value="<?php echo s($talla->id); ?>"> <?php echo $talla->nombre;?> </option>
         <?php endforeach; ?>
     </select>
 
-    <!-- <label for="color">Color:</label>
+    <label for="color">Color:</label>
     <select name="ropa[colorId]">
         <option value="">-- Seleccione --</option>
-        <?php foreach($vendedores as $vendedor) : ?>
-            <option <?php echo $propiedad->vendedores_id === $vendedor->id ? 'selected' : ''; ?> value="<?php echo s($vendedor->id); ?>"> <?php echo $vendedor->nombre . " " . $vendedor->apellido; ?> </option>
+        <?php foreach($colores as $color) : ?>
+            <option <?php echo $ropa->colorId === $color->id ? 'selected' : ''; ?> value="<?php echo s($color->id); ?>"> <?php echo $color->nombre; ?> </option>
         <?php endforeach; ?>
     </select>
 
     <label for="marca">Marca:</label>
     <select name="ropa[marcaId]">
         <option value="">-- Seleccione --</option>
-        <?php foreach($vendedores as $vendedor) : ?>
-            <option <?php echo $propiedad->vendedores_id === $vendedor->id ? 'selected' : ''; ?> value="<?php echo s($vendedor->id); ?>"> <?php echo $vendedor->nombre . " " . $vendedor->apellido; ?> </option>
+        <?php foreach($marcas as $marca) : ?>
+            <option <?php echo $ropa->marcaId === $marca->id ? 'selected' : ''; ?> value="<?php echo s($marca->id); ?>"> <?php echo $marca->nombre; ?> </option>
         <?php endforeach; ?>
     </select>
 
     <label for="tienda">Tienda:</label>
     <select name="ropa[tiendaId]">
         <option value="">-- Seleccione --</option>
-        <?php foreach($vendedores as $vendedor) : ?>
-            <option <?php echo $propiedad->vendedores_id === $vendedor->id ? 'selected' : ''; ?> value="<?php echo s($vendedor->id); ?>"> <?php echo $vendedor->nombre . " " . $vendedor->apellido; ?> </option>
+        <?php foreach($tiendas as $tienda) : ?>
+            <option <?php echo $ropa->tiendaId === $tienda->id ? 'selected' : ''; ?> value="<?php echo s($tienda->id); ?>"> <?php echo $tienda->nombre; ?> </option>
         <?php endforeach; ?>
-    </select> -->
+    </select> 
 </fieldset>

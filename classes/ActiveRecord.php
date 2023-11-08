@@ -72,6 +72,33 @@ class ActiveRecord {
         return $objeto;
     }
 
+    public function sincronizar($args = []) {
+        foreach($args as $key => $value):
+            if(property_exists($this, $key) && !is_null($value)){
+                $this->$key = $value;
+            }
+        endforeach;
+    }
+
+    public function setImagen($imagen) {
+        
+        if(!is_null($this->id)){
+            $this->borrarImagen();
+        }   
+        if($imagen){
+            $this->imagen = $imagen;
+        }
+    }
+
+    public function borrarImagen() {
+
+        $existeArchivo = file_exists(CARPETA_IMAGENES . $this->imagen);
+        if($existeArchivo){
+            unlink(CARPETA_IMAGENES . $this->imagen);
+        }
+
+    }
+
     public static function all() {
         $query = "SELECT * FROM " . static::$tabla;
 
@@ -103,8 +130,8 @@ class ActiveRecord {
         $resultado = self::$db->query($query);
 
         if($resultado) {
-            // Redireccionar al usuario.
-            header('Location: /comparador-ropa/');
+            header('location: /comparador-ropa/admin/?query=todo');
+            //header('location: /comparador-ropa/admin/?query=todo&resultado=1');
         }
 
     }
@@ -126,9 +153,21 @@ class ActiveRecord {
         $resultado = self::$db->query($query);
 
         if($resultado) {
-            // Redireccionar al usuario.
-            header('Location: /comparador-ropa/');
+            header('location: /comparador-ropa/admin/?query=todo');
+        //  header('location: /comparador-ropa/admin/?query=todo&resultado=2');
         }
+    }
+
+    public function eliminar() {
+        $query = "DELETE FROM " . static::$tabla . " WHERE id = " . self::$db->escape_string($this->id) . " LIMIT 1";
+        $resultado = self::$db->query($query);
+
+        if($resultado) {
+            $this->borrarImagen();
+            header('location: /comparador-ropa/admin/?query=todo');
+        //     header('location: /comparador-ropa/admin/?query=todo&resultado=3');
+        }
+
     }
 
     public function tipo($tipo){
@@ -136,4 +175,14 @@ class ActiveRecord {
         $resultado = self::consultarSQL($query);
         return $resultado;
     }
+
+    public static function find($id) {
+        $query = "SELECT * FROM " . static::$tabla . " WHERE id = $id";
+
+        $resultado = self::consultarSQL($query);
+
+        return array_shift($resultado);
+    }
+
+    
 }

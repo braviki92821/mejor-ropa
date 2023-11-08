@@ -22,4 +22,12 @@ function s ($html) : string {
     return $s;
 }
 
+function estaAutenticado() {
+    session_start();
+
+    if(!$_SESSION['login']) {
+        header('Location: /bienesraices');
+    }
+}
+
 
